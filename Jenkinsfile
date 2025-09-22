@@ -13,8 +13,8 @@ pipeline {
             steps {
                 echo 'Installing Python dependencies system-wide...'
                 sh '''
-                    sudo python3 -m pip install --upgrade pip
-                    sudo python3 -m pip install pytest
+                    python3 -m pip install --upgrade pip
+                    python3 -m pip install pytest
                 '''
             }
         }
