@@ -1,11 +1,6 @@
 pipeline {
     agent any
-    
-    environment {
-        PYTHON_PATH = '/usr/bin/python3'
-        VENV_PATH = 'venv'
-    }
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,12 +11,10 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Creating virtual environment and installing dependencies...'
+                echo 'Installing Python dependencies system-wide...'
                 sh '''
-                    python3 -m venv $VENV_PATH
-                    source $VENV_PATH/bin/activate
-                    pip install --upgrade pip
-                    pip install pytest
+                    sudo python3 -m pip install --upgrade pip
+                    sudo python3 -m pip install pytest
                 '''
             }
         }
@@ -29,20 +22,14 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running unit tests...'
-                sh '''
-                    source $VENV_PATH/bin/activate
-                    python -m pytest test_app.py -v
-                '''
+                sh 'python3 -m pytest test_app.py -v'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building application...'
-                sh '''
-                    source $VENV_PATH/bin/activate
-                    python app.py
-                '''
+                sh 'python3 app.py'
             }
         }
 
